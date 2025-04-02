@@ -113,6 +113,7 @@
             width: 100%;
         }
 
+        .introduction-btn,
         .manual-btn {
             cursor: pointer;
         }
@@ -122,16 +123,20 @@
         }
 
         .fa-house {
-            color: #2ca9e1;
+            color: #3eb370;
         }
 
         .fa-bookmark {
-            color: #2ca9e1;
+            color: #e95295;
         }
 
-        #update-btn,
+        .update,
         .footer p a {
             border-bottom: 1px dotted #000000;
+        }
+
+        .update {
+            cursor: pointer;
         }
 
         #overlay {
@@ -170,7 +175,7 @@
             padding-bottom: 3px;
         }
 
-        .fa-sort-down{
+        .fa-sort-down {
             padding-bottom: 5px;
         }
 
@@ -199,8 +204,6 @@
             color: #2ca9e1;
             border: 1px solid #2ca9e1;
         }
-
-
     </style>
 
 </head>
@@ -233,7 +236,7 @@
             <img src="./images/install.jpg" width="100%" alt="インストール方法">
             <p class="mt-5">PWAに対応しているので、iPhone、Androidともに、WEBブラウザの「ホーム画面に追加」からインストールできます。</p>
 
-            <h3 class="text-2xl mt-7" id="manual_h3">アプリに込めた思い</h3>
+            <h3 class="text-2xl mt-7" id="manual_h3">説明書き</h3>
             <p class="mt-5">子育ては、時として大変なこともあります。</p>
             <p class="mt-5">親にできることは、見守ることなのだと思います。</p>
             <p class="mt-5">このアプリを手にされた方々が、少しでも子育てを楽しむきっかけになったら幸いです。</p>
@@ -247,12 +250,12 @@
     <!-- フッター -->
     <div id="footer" class="footer p-2 text-center">
         <div class="sns-fb">
-            <div class="fb-share-button" data-href="https://childrearinglife.netlify.app/" data-layout="button_count"
+            <div class="fb-share-button" data-href="https://linkevery2s.github.io/apollon/" data-layout="button_count"
                 data-size="small"></div>
         </div>
         <div class="grid gap-4 grid-cols-3 grid-rows-1">
 
-            <div class="introduction-btn"><i class="fa-regular fa-bookmark"></i> はじめに</div>
+            <div class="introduction-btn"><i class="fa-solid fa-bookmark"></i> はじめに</div>
 
             <a href="./index.html">
                 <div><i class="fa-solid fa-house"></i> ホーム</div>
@@ -263,7 +266,8 @@
         <p class="text-xs mt-1"><a href="https://github.com/linkevery2s/apollon" target="_blank">src on GitHub</a>.
             <i class="fa-regular fa-copyright"></i> <a href="https://hitoshi2s.netlify.app/" target="_blank">齋藤 仁志</a>.
             <span class="update">更新情報</span>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSf-WMoBJRTdA1bmN_SmQ-bsNGeLs1l737d3c9BUNuErjH-KBw/viewform" target="_blank">お問合せ</a>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSf-WMoBJRTdA1bmN_SmQ-bsNGeLs1l737d3c9BUNuErjH-KBw/viewform"
+                target="_blank">お問合せ</a>
 
         </p>
 
@@ -275,10 +279,6 @@
         const main = document.querySelector("#main");
 
         main.innerHTML = "<iframe src ='./space.html' width = '100%' height = '100%'></iframe>"
-
-        const html_iframe = document.querySelector("#html-iframe");
-        const back_button = document.querySelector("#back-button");
-
 
         const manual_button = document.querySelector(".manual-btn");
         const overlay = document.querySelector("#overlay");
@@ -292,34 +292,17 @@
         overlay.addEventListener("click", () => {
             $('#overlay').fadeOut();
             $("#manual").fadeOut();
-            $("#babygrowth").fadeOut();
-            $("#parentmap").fadeOut();
 
         });
 
         closed_btn.addEventListener("click", () => {
             $("#manual").fadeOut();
             $('#overlay').fadeOut();
+
         });
 
     </script>
 
-    <!-- lightbox2 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox-plus-jquery.min.js"
-        integrity="sha512-U9dKDqsXAE11UA9kZ0XKFyZ2gQCj+3AwZdBMni7yXSvWqLFEj8C1s7wRmWl9iyij8d5zb4wm56j4z/JVEwS77g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css"
-        integrity="sha512-ZKX+BvQihRJPA8CROKBhDNvoc2aDMOdAlcm7TUQY+35XYtrd3yh95QOOhsPDQY9QnKE0Wqag9y38OIgEvb88cA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-    <!-- lightbox2 options-->
-    <script>
-        lightbox.option({
-            "alwaysShowNavOnTouchDevices": true,
-            "disableScrolling": true
-        })
-
-    </script>
 
     <!-- Facebookシェアボタン -->
     <div id="fb-root"></div>
