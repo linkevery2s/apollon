@@ -1,0 +1,313 @@
+<!DOCTYPE HTML>
+<html lang="ja">
+<title>惑星</title>
+
+<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
+    <meta charset="UTF-8" name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"
+        integrity="sha512-GWzVrcGlo0TxTRvz9ttioyYJ+Wwk9Ck0G81D+eO63BaqHaJ3YZX9wuqjwgfcV/MrB2PhaVX9DkYVhbFpStnqpQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
+
+    <style>
+        html,
+        body {
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        #overlay {
+            width: 100%;
+            height: 120vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: rgba(0, 0, 0, .8);
+            display: none;
+            z-index: 10;
+        }
+
+        #ar {
+            width: 100%;
+            height: 100%;
+            z-index: 11;
+            display: none;
+            left: 50%;
+            position: fixed;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            padding: .3em;
+            border-radius: .3em;
+            background: #ffffff;
+        }
+
+        #ar-iframe{
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            z-index: 0;
+        }
+
+        .closed{
+            position: fixed;
+            z-index: 2;
+            top: 50%;
+            transform: translate(0% ,-50%);
+            right: 0;
+        }
+
+        .database{
+            position: fixed;
+            z-index: 2;
+            bottom: 0;
+            right: 0;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- ポップアップ用のoverlay -->
+    <div id="overlay"></div>
+
+    <!-- 3d -->
+
+    <div id="ar">
+        <button type="button" class="btn btn-primary closed mt-2 me-2">閉じる</button>
+        <div id="ar-iframe"></div>
+        <a href="https://github.com/linkevery2s/apollon/tree/main/docs/data" target="_blank"><button type="button" class="btn btn-secondary database mb-4 me-2"><i class="fa-solid fa-database"></i> ３Dデータ</button></a>
+    </div>
+
+    <main>
+
+        <div class="album py-5 bg-body-tertiary">
+            <div class="container">
+
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            <img src="./images/sun.jpg" width="100%" alt="太陽">
+                            <div class="card-body">
+                                <h3>太陽</h3>
+                                <p class="card-text">太陽系の中心にある恒星で、水素を核融合しエネルギーを放出。生命や気候を支える源。</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <button type="button" onclick="mapshow(this);" id="sun"
+                                            class="btn btn-sm btn-outline-secondary">View</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            <img src="./images/mercury.jpg" width="100%" alt="水星">
+                            <div class="card-body">
+                                <h3>水星</h3>
+                                <p class="card-text">太陽に最も近い惑星で、小型で大気がほぼなく、極端な温度差が特徴。</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <button type="button" onclick="mapshow(this);" id="mercury" class="btn btn-sm btn-outline-secondary">View</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            <img src="./images/venus.jpg" width="100%" alt="金星">
+                            <div class="card-body">
+                                <h3>金星</h3>
+                                <p class="card-text">厚い二酸化炭素の大気に覆われ、温室効果で非常に高温。地球と似たサイズ。</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <button type="button" onclick="mapshow(this);" id="venus" class="btn btn-sm btn-outline-secondary">View</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            <img src="./images/earth.jpg" width="100%" alt="地球">
+                            <div class="card-body">
+                                <h3>地球</h3>
+                                <p class="card-text">水と生命が存在する唯一の惑星。適度な気温と酸素豊富な大気を持つ。</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <button type="button" onclick="mapshow(this);" id="earth" class="btn btn-sm btn-outline-secondary">View</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            <img src="./images/mars.jpg" width="100%" alt="火星">
+                            <div class="card-body">
+                                <h3>火星</h3>
+                                <p class="card-text">赤い砂漠の惑星で、薄い大気と極冠が特徴。かつて水があった可能性が高い。</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <button type="button" onclick="mapshow(this);" id="mars" class="btn btn-sm btn-outline-secondary">View</button>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            <img src="./images/jupiter.jpg" width="100%" alt="木星">
+                            <div class="card-body">
+                                <h3>木星</h3>
+                                <p class="card-text">太陽系最大の惑星で、巨大なガス惑星。大赤斑という嵐が有名。</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <button type="button" onclick="mapshow(this);" id="jupiter" class="btn btn-sm btn-outline-secondary">View</button>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            <img src="./images/saturn.jpg" width="100%" alt="土星">
+                            <div class="card-body">
+                                <h3>土星</h3>
+                                <p class="card-text">美しい環を持つガス惑星。主に水氷と岩で構成された環が特徴的。</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <button type="button" onclick="mapshow(this);" id="saturn" class="btn btn-sm btn-outline-secondary">View</button>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            <img src="./images/uranus.jpg" width="100%" alt="天王星">
+                            <div class="card-body">
+                                <h3>天王星</h3>
+                                <p class="card-text">青緑色の氷巨星で、自転軸が横倒し。主に氷とガスで構成される。</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <button type="button" onclick="mapshow(this);" id="uranus" class="btn btn-sm btn-outline-secondary">View</button>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            <img src="./images/neptune.jpg" width="100%" alt="海王星">
+                            <div class="card-body">
+                                <h3>海王星</h3>
+                                <p class="card-text">青い氷巨星で、強風と暗い斑点が特徴。太陽系の最外縁惑星。</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <button type="button" onclick="mapshow(this);" id="neptune" class="btn btn-sm btn-outline-secondary">View</button>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            <img src="./images/moon.jpg" width="100%" alt="月">
+                            <div class="card-body">
+                                <h3>月</h3>
+                                <p class="card-text">地球の唯一の衛星で、地球に引力の影響を与え潮汐を生む。表面はクレーターが多く、水は少量存在。</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <button type="button" onclick="mapshow(this);" id="moon" class="btn btn-sm btn-outline-secondary">View</button>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+
+    <script type="module">
+
+        const overlay = document.querySelector('#overlay');
+        const ar_iframe = document.querySelector("#ar-iframe");
+        const closed = document.querySelector(".closed");
+
+        overlay.addEventListener('click', () => {
+            $('#overlay').fadeOut();
+            $('#ar').fadeOut();
+        });
+
+        closed.addEventListener('click', () => {
+            $('#overlay').fadeOut();
+            $('#ar').fadeOut();
+        });
+
+        window.mapshow = (ele) => {
+
+            let id_value = ele.id;
+
+            $('#overlay').fadeIn();
+
+            console.log(id_value);
+
+            $('#ar').fadeIn();
+
+            ar_iframe.innerHTML = "<iframe src='./planet/" + id_value + ".html' width='100%' height= '100%' border='0'></iframe>";
+
+        }
+
+    </script>
+
+
+
+</body>
+
+</html>
