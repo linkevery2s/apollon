@@ -49,6 +49,7 @@
             height: 100%;
             z-index: 0;
             font-family: "Meiryo", "Hiragino Maru Gothic Pro", sans-serif;
+            background: #000000;
         }
 
         #header {
@@ -233,11 +234,28 @@
 
         .sun {
             color: #ff0000;
+            background: #ffffff;
+            border-radius: 100%;
         }
 
         .planet {
-            color: #FFA500;
+            color: #ffa500;
+            background: #ffffff;
+            border-radius: 100%;
         }
+
+        .ground {
+            color: #ffff00;
+            background: #ffffff;
+            border-radius: 100%;
+        }
+
+        .kepler {
+            color: #3eb370;
+            background: #ffffff;
+            border-radius: 100%;
+        }
+
     </style>
 
 </head>
@@ -268,9 +286,9 @@
 
         <ul class="text-right">
             <li id="space" onclick="mapshow(this);">太陽系惑星軌道　<i class="sun fa-solid fa-xl fa-globe"></i></li>
-            <li id="planet" onclick="mapshow(this);">各惑星解説　<i class="planet fa-solid fa-xl fa-globe"></i></li>
+            <li id="planet" onclick="mapshow(this);">各惑星の解説　<i class="planet fa-solid fa-xl fa-globe"></i></li>
             <li id="ground" onclick="mapshow(this);">地動説の歴史　<i class="ground fa-solid fa-xl fa-globe"></i></li>
-            <li id="kepler" onclick="mapshow(this);">ケプラー３法則　<i class="kepler fa-solid fa-xl fa-globe"></i></li>
+            <li id="kepler" onclick="mapshow(this);">ケプラーの３法則　<i class="kepler fa-solid fa-xl fa-globe"></i></li>
             <li class="menu-closed">閉じる　<i class="closed fa-solid fa-xl fa-circle-xmark"></i></li>
         </ul>
 
@@ -278,15 +296,14 @@
 
     <!-- はじめに -->
     <div id="introduction" class="p-3"><span id="closed-btn" class="py-2 px-3 text-xs">閉じる</span>
-        <h3 class="text-2xl text-center mb-3"><i class="fa-solid fa-bookmark"></i> はじめに</h3>
+        <h3 class="text-2xl text-center mb-3 mt-3"><i class="fa-solid fa-bookmark"></i> はじめに</h3>
 
         <div class="overflow-y-scroll mb-5 mx-2 overview">
 
             <h3 class="text-2xl" id="manual_h3">宇宙を学ぼう！</h3>
 
-            <p class="mt-5">PWAに対応しているので、iPhone、Androidともに、WEBブラウザの「ホーム画面に追加」からインストールできます。</p>
+            <p class="mt-5"></p>
 
-            <h3 class="text-2xl mt-7" id="manual_h3">説明書き</h3>
             <p class="mt-5">子育ては、時として大変なこともあります。</p>
             <p class="mt-5">親にできることは、見守ることなのだと思います。</p>
             <p class="mt-5">このアプリを手にされた方々が、少しでも子育てを楽しむきっかけになったら幸いです。</p>
@@ -298,7 +315,7 @@
 
     <!-- 使い方 -->
     <div id="manual" class="p-3"><span id="closed-btn2" class="py-2 px-3 text-xs">閉じる</span>
-        <h3 class="text-2xl text-center mb-3"><i class="fa-solid fa-book"></i> 使い方</h3>
+        <h3 class="text-2xl text-center mb-3 mt-3"><i class="fa-solid fa-book"></i> 使い方</h3>
 
         <div class="overflow-y-scroll mb-5 mx-2 overview">
 
@@ -306,10 +323,10 @@
             <img src="./images/install.jpg" width="100%" alt="インストール方法">
             <p class="mt-5">PWAに対応しているので、iPhone、Androidともに、WEBブラウザの「ホーム画面に追加」からインストールできます。</p>
 
-            <h3 class="text-2xl mt-7" id="manual_h3">説明書き</h3>
-            <p class="mt-5">子育ては、時として大変なこともあります。</p>
-            <p class="mt-5">親にできることは、見守ることなのだと思います。</p>
-            <p class="mt-5">このアプリを手にされた方々が、少しでも子育てを楽しむきっかけになったら幸いです。</p>
+            <h3 class="text-2xl mt-7" id="manual_h3">メニュー</h3>
+            <p class="mt-5">右下のメニューよりアプリ内コンテンツをご覧いただけます。</p>
+            <p class="mt-5">各惑星の解説や地動説の歴史、ケプラーの３法則など、様々な宇宙に関するコンテンツを用意しています。</p>
+            <p class="mt-5">宇宙空間を存分に味わってください。</p>
 
         </div>
 
@@ -317,7 +334,7 @@
 
     <!-- 更新情報 -->
     <div id="update" class="p-3"><span id="closed-btn3" class="py-2 px-3 text-xs">閉じる</span>
-        <h3 class="text-2xl text-center mb-3"><i class="fa-solid fa-circle-info"></i> 更新情報</h3>
+        <h3 class="text-2xl text-center mb-3 mt-3"><i class="fa-solid fa-circle-info"></i> 更新情報</h3>
 
         <div class="overflow-y-scroll mb-5 mx-2 overview">
 
