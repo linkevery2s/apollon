@@ -58,27 +58,44 @@
             background: #000000;
             color: #ffffff;
         }
+
+        .main {
+            width: 100%;
+            max-width: 700px;
+            left: 50%;
+            transform: translateX(-50%);
+            -webkit-transform: translateX(-50%);
+            -ms-transform: translateX(-50%);
+            position: absolute;
+        }
     </style>
 </head>
 
 <body>
 
-    <div class="main py-24 px-5 text-center">
+    <div class="main py-24 px-5 text-left">
 
         <h1 class="text-2xl">ケプラーの３法則</h1>
 
-        <p>第一法則</p>
+        <h2 class="mt-5">第一法則「楕円軌道の法則」</h2>
+
+        <p class="mt-5">惑星は太陽を一つの焦点とする楕円上を運動する。</p>
 
 
-        <p>第二法則「面積速度一定の法則」</p>
+        <h2 class="mt-5">第二法則「面積速度一定の法則」</h2>
+
+        <p class="mt-5">惑星と太陽とを結ぶ線分が一定時間に通過する面積は一定である。</p>
+
+        <p class="mt-5">面積速度：惑星と太陽を結ぶ線分が単位時間に通過する面積のこと。</p>
+
+        <h2 class="mt-5">第三法則「調和の法則」</h2>
+
+        <p class="mt-5">惑星の公転周期 $T$ の２乗は、軌道楕円の半長軸（惑星の太陽からの平均距離）$a$の３乗に比例する。</p>
+
+        $T^2 = k a^3$ ($k$は比例定数)
 
 
-        <p>第三法則</p>
-
-        $T^2 = k * a^3$
-
-
-        </div>
+    </div>
 
 </body>
 
