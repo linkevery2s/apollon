@@ -59,6 +59,22 @@
             color: #ffffff;
         }
 
+        body {
+            background-attachment: fixed;
+            background-color: #000000;
+            background-image: url("./images/bg-style-ucyunohateni.jpg");
+            background-size: 35%;
+            background-position: right top;
+            background-repeat: no-repeat;
+        }
+
+        @media (max-width: 768px) {
+            body{
+            background-position: right top 15%;
+            background-size: 40%;
+            }
+        }
+
         .main {
             width: 100%;
             max-width: 700px;
@@ -92,7 +108,7 @@
 
         <p class="mt-5">惑星の公転周期 $T$ の２乗は、軌道楕円の半長軸（惑星の太陽からの平均距離）$a$の３乗に比例する。</p>
 
-        $T^2 = k a^3$ ($k$は比例定数)
+        <p class="mt-5">$T^2 = k a^3$ ($k$は比例定数)</p>
 
 
     </div>

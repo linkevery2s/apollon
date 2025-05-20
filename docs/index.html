@@ -274,6 +274,10 @@
             border-radius: 100%;
         }
 
+        #ground, #newton, #einstein, #blackhole{
+            display: none;
+        }
+
     </style>
 
 </head>
@@ -319,9 +323,9 @@
     <div id="introduction" class="p-3"><span id="closed-btn" class="py-2 px-3 text-xs">閉じる</span>
         <h2 class="text-2xl text-center mb-3 mt-3"><i class="fa-solid fa-bookmark"></i> はじめに</h2>
 
-        <div class="overflow-y-scroll mb-5 mx-2 overview">
+        <div class="overflow-y-scroll mb-5 mx-2 p-3 overview">
 
-            <h3 class="text-2xl" id="manual_h3">宇宙は遠い存在なのか？</h3>
+            <h3 class="text-2xl" id="manual_h3">宇宙を感じよう！</h3>
 
             <p class="mt-5">人間誰しも、生まれてから一度は夜空を見たことがあると思います。</p>
 
@@ -343,33 +347,11 @@
 
             <p class="mt-5">僕は、遠い存在だった宇宙、人類との距離が縮まっていると感じています。</p>
 
-            <h3 class="text-2xl" id="manual_h3">地動説</h3>
+            <p class="mt-5">宇宙空間を感じられるようなアプリを開発してみたい！</p>
 
-            <p class="mt-5">地球は、太陽の周りを回る「公転」と自ら回転する「自転」という２つの運動をしています。</p>
+            <p class="mt-5">そういう "思い" を形にしたアプリです。</p>
 
-            <p class="mt-5">今となっては、共通の理解なのですが、以前は違いました。</p>
-
-            <p class="mt-5">以前は、天動説と言って、宇宙の惑星は太陽も含めて地球を中心として複雑な軌道を運動していると考えられていたのです。</p>
-
-            <p class="mt-5">そして、地動説の研究をすることは「異端」とされ、火あぶりの刑が執行された研究者もいます。</p>
-
-            <p class="mt-5">今となっては、信じられない時代があったのだなと思います。</p>
-
-            <p class="mt-5">科学分野において、これまでの常識がひっくり返されたことは幾度となくあったと思います。</p>
-
-            <p class="mt-5">何を疑い、何を信じるのか？</p>
-
-            <p class="mt-5">さて、この世に存在する質量を持った物質は、本当に光速を超せないのでしょうか？</p>
-
-            <p class="mt-5">タイムマシーンは、本当に作れないのでしょうか？</p>
-
-            <p class="mt-5">宇宙に思いを馳せることで、新しい発見があるかもしれません。</p>
-
-            <h3 class="text-2xl" id="manual_h3">シビックテック</h3>
-
-            <p class="mt-5"></p>
-
-            <p class="mt-5"></p>
+            <p class="mt-5">宇宙空間に関心を寄せていただく「きっかけ」にしてもらえれば幸いです。</p>
 
             <p class="mt-5">齋藤　仁志. </p>
         </div>
@@ -388,7 +370,7 @@
 
             <h3 class="text-2xl mt-7" id="manual_h3">メニュー</h3>
             <p class="mt-5">右下のメニューよりアプリ内コンテンツをご覧いただけます。</p>
-            <p class="mt-5">各惑星の解説や地動説の歴史、ケプラーの３法則など、様々な宇宙に関するコンテンツを用意しています。</p>
+            <p class="mt-5">各惑星の解説やケプラーの３法則など、様々な宇宙に関するコンテンツを用意しています。</p>
             <p class="mt-5">宇宙空間を存分に味わってください。</p>
 
         </div>
@@ -401,7 +383,7 @@
 
         <div class="overflow-y-scroll mb-5 mx-2 overview">
 
-            <p class="mt-5">2025.04.10 GUIリニューアル</p>
+            <p class="mt-5">2025.05.20 GUIリニューアル</p>
             <p class="mt-5">2024.11.29 アプリ公開</p>
 
         </div>
@@ -411,10 +393,7 @@
 
     <!-- フッター -->
     <div id="footer" class="footer pt-2 pl-2 pr-2 pb-2 text-center">
-        <div class="sns-fb">
-            <div class="fb-share-button" data-href="https://linkevery2s.github.io/apollon/" data-layout="button_count"
-                data-size="small"></div>
-        </div>
+
         <div class="grid gap-4 grid-cols-3 grid-rows-1">
 
             <div class="introduction-btn"><i class="fa-solid fa-bookmark"></i> はじめに</div>
@@ -424,11 +403,12 @@
             <div class="menu-btn"><i class="fa-solid fa-bars"></i> メニュー</div>
 
         </div>
+
         <p class="text-xs mt-1"><a href="https://github.com/linkevery2s/apollon" target="_blank">src on GitHub</a>.
             <i class="fa-regular fa-copyright"></i> <a href="https://hitoshi2s.netlify.app/" target="_blank">齋藤 仁志</a>.
             <span class="update">更新情報</span>
             <a href="https://docs.google.com/forms/d/e/1FAIpQLSf-WMoBJRTdA1bmN_SmQ-bsNGeLs1l737d3c9BUNuErjH-KBw/viewform"
-                target="_blank">お問合せ</a>
+                target="_blank">お問い合わせ</a>
 
         </p>
 
@@ -512,12 +492,6 @@
         });
 
     </script>
-
-
-    <!-- Facebookシェアボタン -->
-    <div id="fb-root"></div>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v19.0"
-        nonce="Pm3nh7PB"></script>
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-MPP84V2NHB"></script>
