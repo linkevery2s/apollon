@@ -4,9 +4,23 @@
 <meta charset="UTF-8">
 <title>月齢カレンダー</title>
 <style>
-  body { font-family: sans-serif; background: #111; color: white; }
-  #calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; max-width: 600px; margin: 20px auto; }
-  .day {
+
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;  /* 横中央 */
+  align-items: center;      /* 縦中央 */
+  background: #111;
+  color: white;
+  font-family: sans-serif;
+}
+
+#container {
+  text-align: center;
+}
+
+   .day {
     border: 1px solid #444;
     padding: 10px;
     text-align: center;
@@ -22,8 +36,15 @@
 </head>
 <body>
 
-<h2 style="text-align:center;" id="title"></h2>
-<div id="calendar"></div>
+<div id="container">
+
+  <h2 style="text-align:center;" id="title"></h2>
+
+  <div id="calendar"></div>
+
+</div>
+
+
 
 <script>
 
