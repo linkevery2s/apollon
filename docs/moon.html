@@ -2,40 +2,32 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>Moon Phase with SpaceKit</title>
+<title>Moon Phase SpaceKit FIX</title>
+
+<!-- Three.js（必須） -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<!-- SpaceKit -->
 <script src="https://typpo.github.io/spacekit/build/spacekit.js"></script>
+
 <style>
-  body { margin: 0; overflow: hidden; background: black; }
-  #ui {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    color: white;
-    font-family: sans-serif;
-    background: rgba(0,0,0,0.5);
-    padding: 10px;
-    border-radius: 8px;
-  }
-  button { margin: 2px; }
+body { margin: 0; overflow: hidden; background: black; }
+#ui {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  color: white;
+}
 </style>
 </head>
 <body>
 
 <div id="ui">
-  <div>
-    <button onclick="setView('sun')">太陽視点</button>
-    <button onclick="setView('earth')">地球視点</button>
-    <button onclick="setView('free')">フリー</button>
-  </div>
-
-  <div style="margin-top:8px;">
-    時間速度:
-    <input type="range" min="1" max="200" value="10" id="speed">
-  </div>
-
-  <div style="margin-top:8px;">
-    月の状態: <span id="phase">---</span>
-  </div>
+  <button onclick="setView('earth')">地球視点</button>
+  <button onclick="setView('sun')">太陽視点</button>
+  <button onclick="setView('free')">フリー</button>
+  <br><br>
+  月: <span id="phase">---</span>
 </div>
 
 <script>
@@ -48,63 +40,64 @@ const viewer = sim.getViewer();
 // ===== 天体 =====
 const sun = sim.createObject('sun', {
   ephem: Spacekit.Ephem.PLANETS.sun,
-  scale: 10,
 });
 
 const earth = sim.createObject('earth', {
   ephem: Spacekit.Ephem.PLANETS.earth,
-  scale: 1,
 });
 
 const moon = sim.createObject('moon', {
   ephem: Spacekit.Ephem.PLANETS.moon,
-  scale: 0.27,
 });
 
-// ===== 光源（満ち欠けの核心）=====
-const light = new THREE.DirectionalLight(0xffffff, 1.5);
-viewer.scene.add(light);
-
-// ===== 初期設定 =====
-sim.setSpeed(10);
+// ===== カメラ =====
 viewer.followObject(earth);
 
-// ===== UI =====
+// ===== 光源 =====
+const light = new THREE.DirectionalLight(0xffffff, 2);
+viewer.scene.add(light);
+
+// ===== 視点切替 =====
 function setView(mode) {
-  if (mode === 'sun') viewer.followObject(sun);
   if (mode === 'earth') viewer.followObject(earth);
+  if (mode === 'sun') viewer.followObject(sun);
   if (mode === 'free') viewer.stopFollowing();
 }
 
-document.getElementById("speed").addEventListener("input", (e) => {
-  sim.setSpeed(parseFloat(e.target.value));
-});
-
-// ===== 満ち欠け計算 =====
+// ===== 満ち欠け判定 =====
 function getPhase(dot) {
-  if (dot > 0.75) return "満月";
-  if (dot > 0.25) return "凸月";
-  if (dot > -0.25) return "半月";
-  if (dot > -0.75) return "三日月";
+  if (dot > 0.7) return "満月";
+  if (dot > 0.2) return "凸月";
+  if (dot > -0.2) return "半月";
+  if (dot > -0.7) return "三日月";
   return "新月";
 }
 
-// ===== 毎フレーム更新 =====
+// ===== 更新 =====
 sim.onTick(() => {
-  const sunPos = new THREE.Vector3(...sun.getPosition());
-  const earthPos = new THREE.Vector3(...earth.getPosition());
-  const moonPos = new THREE.Vector3(...moon.getPosition());
 
-  // 光を太陽から当てる
+  const sunPosArr = sun.getPosition();
+  const earthPosArr = earth.getPosition();
+  const moonPosArr = moon.getPosition();
+
+  // null対策
+  if (!sunPosArr || !earthPosArr || !moonPosArr) return;
+
+  const sunPos = new THREE.Vector3(...sunPosArr);
+  const earthPos = new THREE.Vector3(...earthPosArr);
+  const moonPos = new THREE.Vector3(...moonPosArr);
+
+  // 光更新
   light.position.copy(sunPos);
 
-  // 満ち欠け計算
+  // フェーズ計算
   const sunToMoon = moonPos.clone().sub(sunPos).normalize();
   const earthToMoon = moonPos.clone().sub(earthPos).normalize();
   const dot = sunToMoon.dot(earthToMoon);
 
   document.getElementById("phase").innerText = getPhase(dot);
 });
+
 </script>
 
 </body>
