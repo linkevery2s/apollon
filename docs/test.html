@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>月の満ち欠けシミュレーション</title>
+  <style>
+    body { margin: 0; overflow: hidden; background: black; }
+    #ui {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      color: white;
+      font-family: sans-serif;
+    }
+  </style>
+</head>
+<body>
+
+<div id="ui">
+  時間:
+  <input type="range" id="timeSlider" min="0" max="6.28" step="0.01" value="0">
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<script>
+let scene = new THREE.Scene();
+let camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.1, 1000);
+let renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+// ===== 太陽 =====
+const sunGeometry = new THREE.SphereGeometry(3, 32, 32);
+const sunMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+const sun = new THREE.Mesh(sunGeometry, sunMaterial);
+scene.add(sun);
+sun.position.set(50, 0, 0);
+
+// ===== 光源 =====
+const light = new THREE.DirectionalLight(0xffffff, 1.5);
+light.position.copy(sun.position);
+scene.add(light);
+
+// ===== 地球 =====
+const earthGeometry = new THREE.SphereGeometry(2, 32, 32);
+const earthMaterial = new THREE.MeshStandardMaterial({ color: 0x2233ff });
+const earth = new THREE.Mesh(earthGeometry, earthMaterial);
+scene.add(earth);
+
+// ===== 月 =====
+const moonGeometry = new THREE.SphereGeometry(0.5, 32, 32);
+const moonMaterial = new THREE.MeshStandardMaterial({ color: 0xaaaaaa });
+const moon = new THREE.Mesh(moonGeometry, moonMaterial);
+scene.add(moon);
+
+// ===== カメラ（地球視点）=====
+camera.position.set(0, 1, 0); // 地球の少し上
+camera.lookAt(moon.position);
+
+// ===== 時間制御 =====
+let time = 0;
+const slider = document.getElementById("timeSlider");
+
+slider.addEventListener("input", () => {
+  time = parseFloat(slider.value);
+  update();
+});
+
+function update() {
+  const radius = 10;
+
+  // 月の公転
+  moon.position.x = Math.cos(time) * radius;
+  moon.position.z = Math.sin(time) * radius;
+
+  // 地球中心に補正
+  moon.position.add(earth.position);
+
+  // カメラ：地球 → 月を見る
+  camera.position.copy(earth.position).add(new THREE.Vector3(0, 1, 3));
+  camera.lookAt(moon.position);
+}
+
+// 初期描画
+update();
+
+// ===== アニメーション =====
+function animate() {
+  requestAnimationFrame(animate);
+  renderer.render(scene, camera);
+}
+animate();
+
+// ===== リサイズ対応 =====
+window.addEventListener("resize", () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+</script>
+
+</body>
+</html>
