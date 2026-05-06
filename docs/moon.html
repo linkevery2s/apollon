@@ -2,101 +2,96 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>Moon Phase SpaceKit FIX</title>
-
-<!-- Three.js（必須） -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
-<!-- SpaceKit -->
-<script src="https://typpo.github.io/spacekit/build/spacekit.js"></script>
-
+<title>月齢カレンダー</title>
 <style>
-body { margin: 0; overflow: hidden; background: black; }
-#ui {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  color: white;
-}
+  body { font-family: sans-serif; background: #111; color: white; }
+  #calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; max-width: 600px; margin: 20px auto; }
+  .day {
+    border: 1px solid #444;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    background: #222;
+  }
+  .day:hover { background: #333; }
+  .moon {
+    font-size: 20px;
+    margin-top: 5px;
+  }
 </style>
 </head>
 <body>
 
-<div id="ui">
-  <button onclick="setView('earth')">地球視点</button>
-  <button onclick="setView('sun')">太陽視点</button>
-  <button onclick="setView('free')">フリー</button>
-  <br><br>
-  月: <span id="phase">---</span>
-</div>
+<h2 style="text-align:center;" id="title"></h2>
+<div id="calendar"></div>
 
 <script>
-const sim = new Spacekit.Simulation(document.body, {
-  basePath: 'https://typpo.github.io/spacekit/src',
-});
 
-const viewer = sim.getViewer();
+// ===== 月齢計算 =====
+const synodicMonth = 29.530588853;
 
-// ===== 天体 =====
-const sun = sim.createObject('sun', {
-  ephem: Spacekit.Ephem.PLANETS.sun,
-});
-
-const earth = sim.createObject('earth', {
-  ephem: Spacekit.Ephem.PLANETS.earth,
-});
-
-const moon = sim.createObject('moon', {
-  ephem: Spacekit.Ephem.PLANETS.moon,
-});
-
-// ===== カメラ =====
-viewer.followObject(earth);
-
-// ===== 光源 =====
-const light = new THREE.DirectionalLight(0xffffff, 2);
-viewer.scene.add(light);
-
-// ===== 視点切替 =====
-function setView(mode) {
-  if (mode === 'earth') viewer.followObject(earth);
-  if (mode === 'sun') viewer.followObject(sun);
-  if (mode === 'free') viewer.stopFollowing();
+function getMoonAge(date) {
+  const base = new Date('2000-01-06T18:14:00Z'); // 新月基準
+  const diff = (date - base) / (1000 * 60 * 60 * 24);
+  return (diff % synodicMonth + synodicMonth) % synodicMonth;
 }
 
-// ===== 満ち欠け判定 =====
-function getPhase(dot) {
-  if (dot > 0.7) return "満月";
-  if (dot > 0.2) return "凸月";
-  if (dot > -0.2) return "半月";
-  if (dot > -0.7) return "三日月";
-  return "新月";
+// ===== フェーズアイコン =====
+function getMoonIcon(age) {
+  if (age < 1.845) return "🌑";
+  if (age < 5.536) return "🌒";
+  if (age < 9.228) return "🌓";
+  if (age < 12.919) return "🌔";
+  if (age < 16.610) return "🌕";
+  if (age < 20.302) return "🌖";
+  if (age < 23.993) return "🌗";
+  if (age < 27.684) return "🌘";
+  return "🌑";
 }
 
-// ===== 更新 =====
-sim.onTick(() => {
+// ===== カレンダー生成 =====
+function generateCalendar(year, month) {
+  const calendar = document.getElementById("calendar");
+  calendar.innerHTML = "";
 
-  const sunPosArr = sun.getPosition();
-  const earthPosArr = earth.getPosition();
-  const moonPosArr = moon.getPosition();
+  document.getElementById("title").innerText = `${year}年 ${month+1}月`;
 
-  // null対策
-  if (!sunPosArr || !earthPosArr || !moonPosArr) return;
+  const firstDay = new Date(year, month, 1).getDay();
+  const lastDate = new Date(year, month + 1, 0).getDate();
 
-  const sunPos = new THREE.Vector3(...sunPosArr);
-  const earthPos = new THREE.Vector3(...earthPosArr);
-  const moonPos = new THREE.Vector3(...moonPosArr);
+  // 空白
+  for (let i = 0; i < firstDay; i++) {
+    calendar.appendChild(document.createElement("div"));
+  }
 
-  // 光更新
-  light.position.copy(sunPos);
+  // 日付
+  for (let d = 1; d <= lastDate; d++) {
+    const date = new Date(year, month, d);
+    const age = getMoonAge(date);
+    const icon = getMoonIcon(age);
 
-  // フェーズ計算
-  const sunToMoon = moonPos.clone().sub(sunPos).normalize();
-  const earthToMoon = moonPos.clone().sub(earthPos).normalize();
-  const dot = sunToMoon.dot(earthToMoon);
+    const div = document.createElement("div");
+    div.className = "day";
+    div.innerHTML = `
+      <div>${d}</div>
+      <div class="moon">${icon}</div>
+    `;
 
-  document.getElementById("phase").innerText = getPhase(dot);
-});
+    // 🔥 ここが重要：クリックイベント
+    div.onclick = () => {
+      alert(`${date.toDateString()} / 月齢: ${age.toFixed(1)}`);
+      
+      // 👉 ここにSpaceKit連携を書く
+      // sim.setTime(date);
+    };
+
+    calendar.appendChild(div);
+  }
+}
+
+// ===== 初期表示 =====
+const today = new Date();
+generateCalendar(today.getFullYear(), today.getMonth());
 
 </script>
 
