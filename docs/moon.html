@@ -3,26 +3,65 @@
 <head>
 <meta charset="UTF-8">
 <title>月齢カレンダー</title>
+
 <style>
-  body { font-family: sans-serif; background: #111; color: white; padding-top:4rem;}
-  #calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; max-width: 600px; margin: 20px auto; }
-  .day {
-    border: 1px solid #444;
-    padding: 10px;
-    text-align: center;
-    cursor: pointer;
-    background: #222;
-  }
-  .day:hover { background: #333; }
-  .moon {
-    font-size: 20px;
-    margin-top: 5px;
-  }
+body {
+  font-family: sans-serif;
+  background: #111;
+  color: white;
+  margin: 0;
+  padding: 4rem 20px 20px 20px;
+}
+
+#controls {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+select {
+  padding: 5px;
+  font-size: 16px;
+  margin: 0 5px;
+}
+
+#calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  max-width: 700px;
+  margin: auto;
+}
+
+.day {
+  border: 1px solid #444;
+  padding: 10px;
+  text-align: center;
+  background: #222;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.day:hover {
+  background: #333;
+}
+
+.today {
+  border: 2px solid yellow;
+}
+
+.moon {
+  font-size: 22px;
+  margin-top: 5px;
+}
 </style>
 </head>
 <body>
 
-<h2 style="text-align:center;" id="title"></h2>
+<div id="controls">
+  <select id="year"></select>
+  <select id="month"></select>
+</div>
+
 <div id="calendar"></div>
 
 <script>
@@ -31,12 +70,12 @@
 const synodicMonth = 29.530588853;
 
 function getMoonAge(date) {
-  const base = new Date('2000-01-06T18:14:00Z'); // 新月基準
+  const base = new Date('2000-01-06T18:14:00Z');
   const diff = (date - base) / (1000 * 60 * 60 * 24);
   return (diff % synodicMonth + synodicMonth) % synodicMonth;
 }
 
-// ===== フェーズアイコン =====
+// ===== 月アイコン =====
 function getMoonIcon(age) {
   if (age < 1.845) return "🌑";
   if (age < 5.536) return "🌒";
@@ -51,10 +90,9 @@ function getMoonIcon(age) {
 
 // ===== カレンダー生成 =====
 function generateCalendar(year, month) {
+
   const calendar = document.getElementById("calendar");
   calendar.innerHTML = "";
-
-  document.getElementById("title").innerText = `${year}年 ${month+1}月`;
 
   const firstDay = new Date(year, month, 1).getDay();
   const lastDate = new Date(year, month + 1, 0).getDate();
@@ -64,34 +102,88 @@ function generateCalendar(year, month) {
     calendar.appendChild(document.createElement("div"));
   }
 
-  // 日付
+  // 日付生成
   for (let d = 1; d <= lastDate; d++) {
+
     const date = new Date(year, month, d);
+
     const age = getMoonAge(date);
     const icon = getMoonIcon(age);
 
     const div = document.createElement("div");
     div.className = "day";
+
+    // 今日判定
+    const today = new Date();
+
+    if (
+      d === today.getDate() &&
+      month === today.getMonth() &&
+      year === today.getFullYear()
+    ) {
+      div.classList.add("today");
+    }
+
     div.innerHTML = `
       <div>${d}</div>
       <div class="moon">${icon}</div>
     `;
 
-    // 🔥 ここが重要：クリックイベント
     div.onclick = () => {
-      alert(`${date.toDateString()} / 月齢: ${age.toFixed(1)}`);
-      
-      // 👉 ここにSpaceKit連携を書く
+
+      alert(`
+日付: ${year}/${month+1}/${d}
+月齢: ${age.toFixed(1)}
+      `);
+
+      // ===== SpaceKit連携 =====
       // sim.setTime(date);
+
     };
 
     calendar.appendChild(div);
   }
 }
 
-// ===== 初期表示 =====
+// ===== プルダウン =====
+const yearSelect = document.getElementById("year");
+const monthSelect = document.getElementById("month");
+
+// 年
+for (let y = 2020; y <= 2035; y++) {
+  const option = document.createElement("option");
+  option.value = y;
+  option.textContent = y + "年";
+  yearSelect.appendChild(option);
+}
+
+// 月
+for (let m = 0; m < 12; m++) {
+  const option = document.createElement("option");
+  option.value = m;
+  option.textContent = (m + 1) + "月";
+  monthSelect.appendChild(option);
+}
+
+// 初期値
 const today = new Date();
-generateCalendar(today.getFullYear(), today.getMonth());
+
+yearSelect.value = today.getFullYear();
+monthSelect.value = today.getMonth();
+
+// 更新
+function updateCalendar() {
+  generateCalendar(
+    parseInt(yearSelect.value),
+    parseInt(monthSelect.value)
+  );
+}
+
+yearSelect.addEventListener("change", updateCalendar);
+monthSelect.addEventListener("change", updateCalendar);
+
+// 初回
+updateCalendar();
 
 </script>
 
