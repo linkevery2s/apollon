@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>宇宙カレンダー</title>
+
+<style>
+body{
+  font-family:sans-serif;
+  background:#111;
+  color:white;
+  margin:0;
+  padding:20px;
+}
+
+#controls{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+select{
+  padding:6px;
+  font-size:16px;
+  margin:0 5px;
+  background:#222;
+  color:white;
+  border:1px solid #555;
+}
+
+#calendar{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:6px;
+  max-width:800px;
+  margin:auto;
+}
+
+.day{
+  background:#222;
+  border:1px solid #444;
+  border-radius:10px;
+  padding:10px;
+  min-height:90px;
+  position:relative;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.day:hover{
+  background:#333;
+}
+
+.today{
+  border:2px solid yellow;
+}
+
+.date{
+  font-size:14px;
+}
+
+.moon{
+  font-size:24px;
+  margin-top:5px;
+}
+
+.event{
+  margin-top:6px;
+  font-size:12px;
+  color:#7dd3fc;
+}
+
+.meteor{
+  position:absolute;
+  top:5px;
+  right:5px;
+  font-size:18px;
+}
+</style>
+</head>
+<body>
+
+<div id="controls">
+  <select id="year"></select>
+  <select id="month"></select>
+</div>
+
+<div id="calendar"></div>
+
+<script>
+
+// =============================
+// 流星群データ
+// =============================
+const meteorShowers = {
+  "1-4":  { icon:"☄️", name:"しぶんぎ座流星群" },
+  "8-13": { icon:"☄️", name:"ペルセウス座流星群" },
+  "10-21":{ icon:"☄️", name:"オリオン座流星群" },
+  "11-17":{ icon:"☄️", name:"しし座流星群" },
+  "12-14":{ icon:"☄️", name:"ふたご座流星群" }
+};
+
+// =============================
+// 月齢計算
+// =============================
+const synodicMonth = 29.530588853;
+
+function getMoonAge(date){
+  const base = new Date('2000-01-06T18:14:00Z');
+  const diff = (date - base) / (1000 * 60 * 60 * 24);
+  return (diff % synodicMonth + synodicMonth) % synodicMonth;
+}
+
+// =============================
+// 月アイコン
+// =============================
+function getMoonIcon(age){
+  if (age < 1.845) return "🌑";
+  if (age < 5.536) return "🌒";
+  if (age < 9.228) return "🌓";
+  if (age < 12.919) return "🌔";
+  if (age < 16.610) return "🌕";
+  if (age < 20.302) return "🌖";
+  if (age < 23.993) return "🌗";
+  if (age < 27.684) return "🌘";
+  return "🌑";
+}
+
+// =============================
+// カレンダー生成
+// =============================
+function generateCalendar(year, month){
+
+  const calendar = document.getElementById("calendar");
+  calendar.innerHTML = "";
+
+  const firstDay = new Date(year, month, 1).getDay();
+  const lastDate = new Date(year, month + 1, 0).getDate();
+
+  // 空白
+  for(let i=0;i<firstDay;i++){
+    calendar.appendChild(document.createElement("div"));
+  }
+
+  // 日付
+  for(let d=1; d<=lastDate; d++){
+
+    const date = new Date(year, month, d);
+
+    const age = getMoonAge(date);
+    const moonIcon = getMoonIcon(age);
+
+    const div = document.createElement("div");
+    div.className = "day";
+
+    // 今日判定
+    const today = new Date();
+
+    if(
+      d === today.getDate() &&
+      month === today.getMonth() &&
+      year === today.getFullYear()
+    ){
+      div.classList.add("today");
+    }
+
+    // 流星群判定
+    const key = `${month+1}-${d}`;
+    const meteor = meteorShowers[key];
+
+    let meteorHTML = "";
+    let eventHTML = "";
+
+    if(meteor){
+      meteorHTML = `<div class="meteor">${meteor.icon}</div>`;
+      eventHTML = `<div class="event">${meteor.name}</div>`;
+    }
+
+    div.innerHTML = `
+      ${meteorHTML}
+      <div class="date">${d}</div>
+      <div class="moon">${moonIcon}</div>
+      ${eventHTML}
+    `;
+
+    // クリック
+    div.onclick = () => {
+
+      let text = `
+日付: ${year}/${month+1}/${d}
+月齢: ${age.toFixed(1)}
+      `;
+
+      if(meteor){
+        text += `
+
+流星群:
+${meteor.name}
+        `;
+      }
+
+      alert(text);
+
+      // =========================
+      // SpaceKit連携
+      // =========================
+      // sim.setTime(date);
+
+    };
+
+    calendar.appendChild(div);
+  }
+}
+
+// =============================
+// プルダウン
+// =============================
+const yearSelect = document.getElementById("year");
+const monthSelect = document.getElementById("month");
+
+// 年
+for(let y=2020; y<=2035; y++){
+  const option = document.createElement("option");
+  option.value = y;
+  option.textContent = y + "年";
+  yearSelect.appendChild(option);
+}
+
+// 月
+for(let m=0; m<12; m++){
+  const option = document.createElement("option");
+  option.value = m;
+  option.textContent = (m+1) + "月";
+  monthSelect.appendChild(option);
+}
+
+// 初期値
+const today = new Date();
+
+yearSelect.value = today.getFullYear();
+monthSelect.value = today.getMonth();
+
+// 更新
+function updateCalendar(){
+  generateCalendar(
+    parseInt(yearSelect.value),
+    parseInt(monthSelect.value)
+  );
+}
+
+yearSelect.addEventListener("change", updateCalendar);
+monthSelect.addEventListener("change", updateCalendar);
+
+// 初回
+updateCalendar();
+
+</script>
+
+</body>
+</html>
